@@ -1,31 +1,25 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
+<style src='vuetify/dist/vuetify.min.css'></style>
+<style src='..\node_modules\material-design-icons\iconfont\material-icons.css'></style>
+
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+
+* {
+  font-family: Calibri, Tahoma, sans-serif;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+body {
+  background-color: #fafafa
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.primary {
+  background-color: #1867c0 !important
 }
+
 </style>
+
