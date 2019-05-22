@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-app>
     <v-container grid-list-md text-md-center>
       <v-layout pa-3 mb-2 row wrap>
         <v-flex md12 class="subheading">You asked</v-flex>
@@ -86,7 +86,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -162,7 +162,8 @@ export default {
             method: 'GET',
             url: '/Semantics/Similarity',
             params: {
-              q: this.$route.query.q
+              q: this.$route.query.q,
+              fetchSize: this.$route.query.fetchSize
             }
           }
         )
@@ -187,7 +188,7 @@ export default {
                 this.duplicates = data
                 this.tasksComplete = true
                 if(this.duplicates.length > 0)
-                  this.duplicateText = 'Close matches were found for your question. Look for questions marked with '
+                  this.duplicateText = 'Close matches were found for your question. Look for questions marked with'
                 else
                   this.duplicateText = 'No close matches found for your question.'
               })
