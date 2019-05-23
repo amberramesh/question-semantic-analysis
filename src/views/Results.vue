@@ -140,13 +140,13 @@ export default {
 
     axios({
       method: 'GET',
-      url: '/get_labels/',
+      url: '/Semantics/Labels',
       params: {
-        question: this.$route.query.q
+        q: this.$route.query.q
       }
     })
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         // GET request for similar questions
         const data = res.data
         let keys = Object.keys(data)
@@ -169,7 +169,7 @@ export default {
         )
           .then(res => {
             const data = res.data
-            console.log(data)
+            // console.log(data)
             this.similarQuestions = data
             this.showContext = true
             this.testDuplicates = true
@@ -184,7 +184,7 @@ export default {
             })
               .then(res => {
                 const data = res.data
-                console.log(data)
+                // console.log(data)
                 this.duplicates = data
                 this.tasksComplete = true
                 if(this.duplicates.length > 0)

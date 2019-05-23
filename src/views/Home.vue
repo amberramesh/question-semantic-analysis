@@ -3,7 +3,7 @@
   <v-container> 
     <v-layout pa-2 ma-4 row wrap>
       <v-flex md12 class="text-md-center font-weight-thin display-2">
-        <span>Semantic Classification of Questions on Q&A Websites</span>
+        <span>Analyzing Question Semantics on Q&A Websites</span>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
@@ -115,9 +115,9 @@ export default {
     changeDataset() {
       this.disableUI = true
       axios({
-        method: 'GET',
-        url: '/set_dataset/',
-        params: {
+        method: 'POST',
+        url: '/Dataset/',
+        data: {
           dataset: datasetDict[this.setDataset]
         }
       })

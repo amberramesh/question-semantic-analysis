@@ -38,6 +38,9 @@
     },
     "parserOptions": {
       "parser": "babel-eslint"
+    },
+    "globals": {
+      "table": true
     }
   },
   "postcss": {
