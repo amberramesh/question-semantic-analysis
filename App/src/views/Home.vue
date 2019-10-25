@@ -114,12 +114,15 @@ export default {
     },
     changeDataset() {
       this.disableUI = true
+      let formBody = new FormData()
+      formBody.set('dataset', datasetDict[this.setDataset])
       axios({
         method: 'POST',
-        url: '/Dataset/',
-        data: {
-          dataset: datasetDict[this.setDataset]
-        }
+        url: '/Dataset',
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        data: formBody
       })
         .then(() => {
           this.disableUI = false
