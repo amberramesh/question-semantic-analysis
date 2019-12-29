@@ -5,6 +5,7 @@ from flask_cors import CORS
 import json
 from use_similarity_measure import USESimilarityMeasure
 from bert_classifier import BertClassifier
+from glove_classifier import SentenceClassifier
 from numpy import loadtxt
 
 Q_VECTORS_PATH = os.path.join(os.getcwd(), 'data/vectors.out')
@@ -29,7 +30,7 @@ def get_similar_questions():
 @app.route('/Semantics/Duplicates', methods=['GET'])
 def get_duplicates():
 	global bc, bc_session, context_results
-	
+
 	user_question = request.args['q']
 
 	if user_question != '' and context_results['user_question'] == user_question:
@@ -40,6 +41,11 @@ def get_duplicates():
 	return json.dumps([])
 
 if __name__ == "__main__":
+	table = 'compiled' # Load the 'compiled' dataset as the default dataset.
+	classifier = SentenceClassifier()
+	model, embeddings_index = classifier.setup_classifier(table, load_saved=1)
+	graph = tf.get_default_graph()
+
 	context_results = dict()
 	context_results['user_question'] = ''
 	context_results['topk_results'] = []
@@ -53,7 +59,7 @@ if __name__ == "__main__":
 		delimiter=',',
 		encoding="utf-8")
 	print('Finished loading vectors.out')
-	
+
 	print('Loading BERT Classifier')
 	bc = BertClassifier()
 	bc_session = bc.getSession()
