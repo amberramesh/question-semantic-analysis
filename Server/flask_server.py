@@ -1,16 +1,35 @@
 import os
 from flask import Flask, render_template, request
-from glove_classifier import SentenceClassifier
 import tensorflow as tf
 from flask_cors import CORS
 import json
 from use_similarity_measure import USESimilarityMeasure
 from bert_classifier import BertClassifier
+from glove_classifier import SentenceClassifier
 from numpy import loadtxt
 
 Q_VECTORS_PATH = os.path.join(os.getcwd(), 'data/vectors.out')
 app = Flask(__name__)
 CORS(app)
+
+@app.route('/Dataset', methods=['POST'])
+def switch_dataset():
+    global table, classifier, model, embeddings_index, graph
+
+    if request.form.get("dataset") != None:
+        table = request.form["dataset"]
+        classifier = SentenceClassifier()
+        model, embeddings_index = classifier.setup_classifier(table, load_saved=1)
+        graph = tf.get_default_graph()
+
+    return ""
+
+@app.route('/Semantics/Labels', methods=['GET'])
+def get_labels():
+    question = str(request.args['q'])
+    with graph.as_default():
+        possible_tags = classifier.tag_question(model, question)
+    return json.dumps(possible_tags)
 
 @app.route('/Semantics/Similarity', methods=['GET'])
 def get_similar_questions():
@@ -41,6 +60,11 @@ def get_duplicates():
 	return json.dumps([])
 
 if __name__ == "__main__":
+	table = 'compiled' # Load the 'compiled' dataset as the default dataset.
+	classifier = SentenceClassifier()
+	model, embeddings_index = classifier.setup_classifier(table, load_saved=1)
+	graph = tf.get_default_graph()
+
 	context_results = dict()
 	context_results['user_question'] = ''
 	context_results['topk_results'] = []
@@ -54,7 +78,7 @@ if __name__ == "__main__":
 		delimiter=',',
 		encoding="utf-8")
 	print('Finished loading vectors.out')
-	
+
 	print('Loading BERT Classifier')
 	bc = BertClassifier()
 	bc_session = bc.getSession()
