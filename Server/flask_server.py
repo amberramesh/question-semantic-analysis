@@ -49,7 +49,7 @@ def get_similar_questions():
 @app.route('/Semantics/Duplicates', methods=['GET'])
 def get_duplicates():
 	global bc, bc_session, context_results
-
+	
 	user_question = request.args['q']
 
 	if user_question != '' and context_results['user_question'] == user_question:
