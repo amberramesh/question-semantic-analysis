@@ -12,6 +12,25 @@ Q_VECTORS_PATH = os.path.join(os.getcwd(), 'data/vectors.out')
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/Dataset', methods=['POST'])
+def switch_dataset():
+    global table, classifier, model, embeddings_index, graph
+
+    if request.form.get("dataset") != None:
+        table = request.form["dataset"]
+        classifier = SentenceClassifier()
+        model, embeddings_index = classifier.setup_classifier(table, load_saved=1)
+        graph = tf.get_default_graph()
+
+    return ""
+
+@app.route('/Semantics/Labels', methods=['GET'])
+def get_labels():
+    question = str(request.args['q'])
+    with graph.as_default():
+        possible_tags = classifier.tag_question(model, question)
+    return json.dumps(possible_tags)
+
 @app.route('/Semantics/Similarity', methods=['GET'])
 def get_similar_questions():
 	global usm, encoding_matrix, context_results
